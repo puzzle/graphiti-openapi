@@ -35,7 +35,7 @@ module Graphiti::OpenAPI
                             :resource
 
     def schema_source(path = @schema_path)
-      Source.load(path)
+      path.respond_to?(:read) ? Source.read(path) : Source.new(data: path, name: 'schema.json', path: 'schema.json')
     end
 
     def template_source(path = @template_path)
