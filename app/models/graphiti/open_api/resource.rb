@@ -75,7 +75,7 @@ module Graphiti::OpenApi
       [].tap do |result|
         result << query_include_parameter
         result << query_fields_parameter
-      end
+      end + query_filter_parameters
     end
 
     def query_fields_parameter
@@ -90,6 +90,31 @@ module Graphiti::OpenApi
                       desc: "[Include only specified fields of #{human} in response](https://jsonapi.org/format/#fetching-sparse-fieldsets)",
                       schema: schema,
                       explode: false)
+    end
+
+    def query_filter_parameter_schema(filter_spec)
+      type = filter_spec[:type]
+      if filter_spec[:single]
+        schema&.types[type]&.to_schema || {type: type}
+      else
+        {
+          type: :array,
+          items: schema&.types[type]&.to_schema || {type: type}
+        }
+      end
+    end
+
+    def query_filter_parameters
+      filters.flat_map do |filter_name, filter_spec|
+        param_schema = query_filter_parameter_schema(filter_spec)
+
+        filter_spec[:operators].map do |operator|
+          query_parameter("filter[#{filter_name}][#{operator}]",
+                          desc: "[Filter #{human} by #{filter_name} using #{operator} operator](https://jsonapi.org/format/#fetching-filtering)",
+                          schema: param_schema,
+                          explode: false)
+        end
+      end
     end
 
     def query_include_parameter
@@ -115,12 +140,17 @@ module Graphiti::OpenApi
     end
 
     def to_parameters
+      filter_params = query_filter_parameters.each_with_object({}) do |filter_param, filters|
+        filter_name = "#{type}_#{filter_param[:name]}".gsub('[', "_").gsub(']', "")
+        filters[filter_name] = filter_param
+      end
+
       {
         "#{type}_id": path_parameter(:id, schema: {type: :string}, desc: "ID of the resource"),
         "#{type}_include": query_include_parameter,
         "#{type}_fields": query_fields_parameter,
         "#{type}_sort": query_sort_parameter,
-      }.keep_if { |name, value| value }
+      }.keep_if { |name, value| value }.merge(filter_params)
     end
 
     def to_schema

@@ -37,6 +37,11 @@ module Graphiti::OpenApi
         parameters << {'$ref': "#/components/parameters/#{type}_include"} if resource.relationships?
         parameters << {'$ref': "#/components/parameters/#{type}_sort"}
         parameters << {'$ref': "#/components/parameters/#{type}_fields"}
+        resource.query_filter_parameters.each do |parameter|
+          filter_name = "#{type}_#{parameter[:name]}".gsub('[', "_").gsub(']', "")
+          parameters << {'$ref': "#/components/parameters/#{filter_name}"}
+        end
+
         resource.relationships.values.map do |relationship|
           relationship.resources.each do |resource|
             parameters << {'$ref': "#/components/parameters/#{resource.type}_fields"}
