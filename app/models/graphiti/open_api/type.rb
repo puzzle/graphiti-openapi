@@ -2,7 +2,7 @@ require "graphiti/open_api"
 require "graphiti/types"
 require_relative "struct"
 
-module Graphiti::OpenAPI
+module Graphiti::OpenApi
   class TypeData < Struct
     attribute :kind, Types::String
     attribute :description, Types::String

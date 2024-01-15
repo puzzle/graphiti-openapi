@@ -2,14 +2,13 @@ require "graphiti/open_api"
 require_relative "struct"
 
 module Graphiti::OpenApi
-  class AttributeData < Struct
+  class ExtraAttributeData < Struct
     attribute :type, Types::String
     attribute :readable, Types::Bool
-    attribute :writable, Types::Bool
     attribute :description, Types::String.optional
   end
 
-  class Attribute < AttributeData
+  class ExtraAttribute < ExtraAttributeData
     attribute :name, Types::Symbol
     attribute :resource, Types::Any
 
@@ -24,16 +23,15 @@ module Graphiti::OpenApi
 
       definition = type.to_schema
       definition[:description] = description if description
-      definition[:readOnly] = readable unless writable
-      definition[:writeOnly] = writable unless readable
+      definition[:readOnly] = true
       {name => definition}
     end
   end
 
-  class Attributes < Hash
-    def self.load(resource, data = resource.__attributes__[:attributes])
+  class ExtraAttributes < Hash
+    def self.load(resource, data = resource.__attributes__[:extra_attributes])
       data.each_with_object(new) do |(name, data), result|
-        result[name] = Attribute.new(data.to_hash.merge(name: name, resource: resource))
+        result[name] = ExtraAttribute.new(data.to_hash.merge(name: name, resource: resource))
       end
     end
   end

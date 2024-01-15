@@ -13,7 +13,7 @@ import "swagger-ui/dist/swagger-ui.css"
 window.addEventListener("load", function () {
   SwaggerUI({
     url: `/api/v1/openapi.json`,
-    dom_id: "#GraphitiOpenAPI",
+    dom_id: "#GraphitiOpenApi",
     presets: [
       presets.apis,
       SwaggerUI.SwaggerUIStandalonePreset

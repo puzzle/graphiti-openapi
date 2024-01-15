@@ -16,7 +16,7 @@ namespace :graphiti do
 
     desc "Generate OpenAPI files in public/"
     task generate: %W[environment #{jsonapi_schema}] do
-      generator = Graphiti::OpenAPI::Generator.new
+      generator = Graphiti::OpenApi::Generator.new
       api = Rails.root.join("public#{ApplicationResource.endpoint_namespace}")
       api.join("openapi.json").write(generator.to_openapi.to_json)
       api.join("openapi.yaml").write(generator.to_openapi(format: :yaml))
@@ -30,5 +30,5 @@ end
 
 file jsonapi_schema do |t|
   Pathname(t.name).dirname.mkpath
-  File.write(t.name, open('http://jsonapi.org/schema').read)
+  File.write(t.name, URI.open('http://jsonapi.org/schema').read)
 end

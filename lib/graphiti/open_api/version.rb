@@ -1,5 +1,5 @@
 module Graphiti
-  module OpenAPI
+  module OpenApi
     VERSION = "0.1.7"
   end
 end

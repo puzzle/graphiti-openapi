@@ -1,4 +1,4 @@
-# Graphiti::OpenAPI
+# Graphiti::OpenApi
 
 OpenAPI 3.0 specification for your ([Graphiti](https://github.com/graphiti-api/graphiti)) JSON:API
 

@@ -52,8 +52,8 @@ RSpec.configure do |config|
   config.include GraphitiSpecHelpers::RSpec
   config.include GraphitiSpecHelpers::Sugar
 
-  config.include Graphiti::OpenAPI::Engine.routes.url_helpers, type: :controller
-  config.include Graphiti::OpenAPI::Engine.routes.url_helpers, type: :request
+  config.include Graphiti::OpenApi::Engine.routes.url_helpers, type: :controller
+  config.include Graphiti::OpenApi::Engine.routes.url_helpers, type: :request
 end
 
 GraphitiSpecHelpers::RSpec.schema!

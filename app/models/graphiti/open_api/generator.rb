@@ -4,7 +4,7 @@ require "dry/core/memoizable"
 require_relative "functions"
 require_relative "schema"
 
-module Graphiti::OpenAPI
+module Graphiti::OpenApi
   class Generator
     extend Forwardable
     include Dry::Core::Memoizable
@@ -39,7 +39,7 @@ module Graphiti::OpenAPI
     end
 
     def template_source(path = @template_path)
-      Source.load(path, parse: YAML.method(:safe_load))
+      Source.read(path, parse: YAML.method(:safe_load))
     end
 
     def paths
@@ -140,7 +140,7 @@ module Graphiti::OpenAPI
     PREFIX_JSONAPI_DEFINITIONS = Functions[:map_keys, -> (key) { "jsonapi_#{key}" }]
 
     def jsonapi_source(path = @jsonapi_path)
-      Source.load(path, rewrite: REWRITE_JSONAPI_SCHEMA, process: PROCESS_JSONAPI_SCHEMA)
+      Source.read(path, rewrite: REWRITE_JSONAPI_SCHEMA, process: PROCESS_JSONAPI_SCHEMA)
     end
 
     def jsonapi_definitions

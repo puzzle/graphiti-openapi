@@ -4,9 +4,9 @@ require "graphiti"
 require "webpacker"
 
 module Graphiti
-  module OpenAPI
+  module OpenApi
     class Engine < ::Rails::Engine
-      isolate_namespace Graphiti::OpenAPI
+      isolate_namespace Graphiti::OpenApi
 
       initializer "graphiti.openapi.init" do
         Mime::Type.register "text/yaml", :yaml

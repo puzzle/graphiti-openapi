@@ -2,7 +2,7 @@ require "graphiti/open_api"
 require_relative "struct"
 require_relative "parameters"
 
-module Graphiti::OpenAPI
+module Graphiti::OpenApi
   class ActionData < Struct
     attribute :resource, Types::String
   end

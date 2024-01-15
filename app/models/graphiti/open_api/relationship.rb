@@ -1,12 +1,12 @@
 require "graphiti/open_api"
 require_relative "struct"
 
-module Graphiti::OpenAPI
+module Graphiti::OpenApi
   class RelationshipData < Struct
     attribute :type, Types::String
     attribute :description, Types::String.optional
     attribute? :resource, Types::String.optional
-    attribute? :resources, Types.Array(Types::String).default([])
+    attribute? :resources, Types.Array(Types::String).default([].freeze)
   end
 
   class Relationship < RelationshipData

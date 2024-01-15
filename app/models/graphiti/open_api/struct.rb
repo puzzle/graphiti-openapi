@@ -4,7 +4,7 @@ require "dry-struct"
 require "dry/core/memoizable"
 require_relative "types"
 
-module Graphiti::OpenAPI
+module Graphiti::OpenApi
   class Struct < Dry::Struct
     include Dry::Core::Memoizable
     extend Forwardable

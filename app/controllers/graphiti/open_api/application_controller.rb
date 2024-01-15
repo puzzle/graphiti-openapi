@@ -1,5 +1,5 @@
 module Graphiti
-  module OpenAPI
+  module OpenApi
     class ApplicationController < ::ApplicationController
       # protect_from_forgery with: :exception
     end

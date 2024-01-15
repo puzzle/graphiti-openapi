@@ -1,7 +1,5 @@
-require_dependency "graphiti/open_api/application_controller"
-
-module Graphiti::OpenAPI
-  class SpecificationsController < ApplicationController
+module Graphiti::OpenApi
+  class SpecificationsController < ::ApplicationController
     def index
       respond_to do |format|
         format.html

@@ -2,7 +2,7 @@ require "graphiti/open_api"
 require_relative "struct"
 require_relative "action"
 
-module Graphiti::OpenAPI
+module Graphiti::OpenApi
   class EndpointData < Struct
     attribute :actions, Types::Hash.map(Types::Symbol, ActionData)
 

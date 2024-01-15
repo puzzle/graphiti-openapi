@@ -1,6 +1,6 @@
 require "rails_helper"
 
-module Graphiti::OpenAPI
+module Graphiti::OpenApi
   RSpec.describe "Specifications", type: :request do
     include Engine.routes.url_helpers
 
@@ -10,12 +10,12 @@ module Graphiti::OpenAPI
         expect(response).to have_http_status(200)
       end
 
-      it "generates JSON OpenAPI specification" do
+      it "generates JSON OpenApi specification" do
         get specifications_path(format: :json)
         expect(response).to have_http_status(200)
       end
 
-      it "generates YAML OpenAPI specification" do
+      it "generates YAML OpenApi specification" do
         get specifications_path(format: :yaml)
         expect(response).to have_http_status(200)
       end

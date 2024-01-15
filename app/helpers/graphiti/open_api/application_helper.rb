@@ -1,5 +1,5 @@
 module Graphiti
-  module OpenAPI
+  module OpenApi
     module ApplicationHelper
     end
   end

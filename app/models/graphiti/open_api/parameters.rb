@@ -1,6 +1,6 @@
 require "graphiti/open_api"
 
-module Graphiti::OpenAPI
+module Graphiti::OpenApi
   module Parameters
     def parameter(name, desc: nil, **options)
       options.merge(name: name).tap do |parameter|

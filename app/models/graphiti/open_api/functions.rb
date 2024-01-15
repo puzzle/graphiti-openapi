@@ -2,7 +2,7 @@ require "graphiti/open_api"
 require "transproc"
 require "transproc/recursion"
 
-module Graphiti::OpenAPI
+module Graphiti::OpenApi
   module Functions
     extend Transproc::Registry
 

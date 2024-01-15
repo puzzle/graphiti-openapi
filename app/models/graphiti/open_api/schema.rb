@@ -4,7 +4,7 @@ require_relative "resource"
 require_relative "endpoint"
 require_relative "type"
 
-module Graphiti::OpenAPI
+module Graphiti::OpenApi
   class Schema < Struct
     attribute :resources, Types.Array(ResourceData)
     attribute :endpoints, Types::Hash.map(Types::Coercible::String, EndpointData)
