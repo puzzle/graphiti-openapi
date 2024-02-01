@@ -24,9 +24,9 @@ namespace :graphiti do
   end
 end
 
-namespace :assets do
-  task precompile: "graphiti:openapi:generate"
-end
+# namespace :assets do
+#   task precompile: "graphiti:openapi:generate"
+# end
 
 file jsonapi_schema do |t|
   Pathname(t.name).dirname.mkpath
