@@ -93,7 +93,7 @@ module Graphiti::OpenApi
     end
 
     def query_filter_parameter_schema(filter_spec)
-      type = filter_spec[:type]
+      type = filter_spec[:type].to_sym
       if filter_spec[:single]
         schema&.types[type]&.to_schema || {type: type}
       else
