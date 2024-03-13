@@ -18,6 +18,7 @@ module Graphiti::OpenApi
       date: {type: :string, format: :date},
       time: {type: :string, format: :'date-time'},
       inet: {type: :string, format: :ipv4},
+      float: {type: :number, format: :float},
     )
 
     attribute :name, Types::Symbol
