@@ -18,11 +18,27 @@ module Graphiti::OpenApi
       schema.types[__attributes__[:type].to_sym]
     end
 
+    def description
+      attr_desc = self[:description]&.strip
+      attr_desc += '.' unless attr_desc.nil? || attr_desc.end_with?('.')
+
+      extra_field_info =
+        <<~DESC
+          This *extra field* will only be present if requested explicitely with the `extra_fields[#{resource.type}]` parameter.
+          See [Graphiti Resource Extra fields](https://www.graphiti.dev/guides/concepts/resources#extra-fields) for more information.
+        DESC
+
+      [
+        attr_desc,
+        extra_field_info
+      ].join(' ')
+    end
+
     def to_property
       return {} unless readable || writable
 
       definition = type.to_schema
-      definition[:description] = description if description
+      definition[:description] = description
       definition[:readOnly] = true
       {name => definition}
     end

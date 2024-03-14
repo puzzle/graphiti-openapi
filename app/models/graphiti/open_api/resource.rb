@@ -59,7 +59,7 @@ module Graphiti::OpenApi
     end
 
     def readable_attributes
-      all_attributes.values.select(&:readable)
+      attributes.values.select(&:readable)
     end
 
     def sortable_attributes
@@ -75,6 +75,7 @@ module Graphiti::OpenApi
       [].tap do |result|
         result << query_include_parameter
         result << query_fields_parameter
+        result << query_extra_fields_parameter
       end + query_filter_parameters
     end
 
@@ -88,6 +89,20 @@ module Graphiti::OpenApi
 
       query_parameter("fields[#{type}]",
                       desc: "[Include only specified fields of #{human} in response](https://jsonapi.org/format/#fetching-sparse-fieldsets)",
+                      schema: schema,
+                      explode: false)
+    end
+
+    def query_extra_fields_parameter
+      schema = {
+        description: "#{human} extra attributes list",
+        type: :array,
+        items: {'$ref': "#/components/schemas/#{type}_extra_attribute"},
+        uniqueItems: true,
+      }
+
+      query_parameter("extra_fields[#{type}]",
+                      desc: "[Include specified extra fields of #{human} in response](https://jsonapi.org/format/#fetching-sparse-fieldsets)",
                       schema: schema,
                       explode: false)
     end
@@ -149,6 +164,7 @@ module Graphiti::OpenApi
         "#{type}_id": path_parameter(:id, schema: {type: :string}, desc: "ID of the resource"),
         "#{type}_include": query_include_parameter,
         "#{type}_fields": query_fields_parameter,
+        "#{type}_extra_fields": query_extra_fields_parameter,
         "#{type}_sort": query_sort_parameter,
       }.keep_if { |name, value| value }.merge(filter_params)
     end
@@ -280,6 +296,11 @@ module Graphiti::OpenApi
             enum: sortable_attribute_names.map { |name| %W[#{name} -#{name}] }.flatten,
           },
           uniqueItems: true,
+        },
+        "#{type}_extra_attribute" => {
+          description: "#{human} extra attributes",
+          type: :string,
+          enum: extra_attributes.keys,
         },
         "#{type}_related" => {
           description: "#{human} relationships available for inclusion",
