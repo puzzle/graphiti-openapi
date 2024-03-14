@@ -1,7 +1,10 @@
-require "rails_helper"
+require "spec_helper"
 
 RSpec.describe Graphiti::OpenApi::Generator do
-  subject(:instance) { described_class.new }
+  subject(:instance) do
+    described_class.new(schema: graphiti_schema,
+                        jsonapi: jsonapi_schema,)
+  end
 
   its(:resources) { is_expected.to be_a Graphiti::OpenApi::Resources }
   its(:endpoints) { is_expected.to be_a Hash }

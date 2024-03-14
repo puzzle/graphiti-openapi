@@ -7,12 +7,6 @@
 /spec/reports/
 /tmp/
 /log/*.log
-/spec/dummy/log/*.log
-/spec/dummy/node_modules/
-/spec/dummy/yarn-error.log
-/spec/dummy/tmp/
-/spec/dummy/public/packs/
-/spec/dummy/public/packs-test/
 
 # rspec failure tracking
 /spec/examples.txt

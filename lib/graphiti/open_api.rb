@@ -1,5 +1,4 @@
 require "graphiti/open_api/version"
-require "active_support"
 
 module Graphiti
   module OpenApi
@@ -7,5 +6,3 @@ module Graphiti
     end
   end
 end
-
-require "graphiti/open_api/engine"
