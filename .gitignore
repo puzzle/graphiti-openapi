@@ -12,3 +12,14 @@
 /spec/examples.txt
 Gemfile.lock
 .ruby-version
+
+# custom project/editor setup
+.envrc
+/.vimrc
+/todo.tasks
+/*.iml
+/.idea
+.pry_history
+.pry-history
+.vscode
+.nvimrc
