@@ -1,3 +1,4 @@
+require "json"
 require "graphiti/open_api"
 require_relative "struct"
 require_relative "functions"

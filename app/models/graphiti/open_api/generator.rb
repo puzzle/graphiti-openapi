@@ -1,8 +1,10 @@
 require "graphiti/open_api"
 require "forwardable"
 require "dry/core/memoizable"
+require "yaml"
 require_relative "functions"
 require_relative "schema"
+require_relative "source"
 
 module Graphiti::OpenApi
   class Generator
@@ -10,10 +12,11 @@ module Graphiti::OpenApi
     include Dry::Core::Memoizable
 
     def initialize(
-                   root: Rails.root,
+                   root: defined?(Rails) ? Rails.root : Pathname.pwd,
                    schema: root.join("public#{ApplicationResource.endpoint_namespace}").join("schema.json"),
                    jsonapi: root.join("public/schemas/jsonapi.json"),
                    template: root.join("config/openapi.yml"))
+
       @root = Pathname(root)
       @schema_path = schema
       @jsonapi_path = jsonapi
@@ -51,7 +54,7 @@ module Graphiti::OpenApi
       template = template_source.data
       data = {
         openapi: "3.0.1",
-        servers: servers,
+        # servers: servers,
         tags: tags,
         paths: paths,
         components: {
@@ -77,12 +80,11 @@ module Graphiti::OpenApi
     private
 
     def servers
-      [{url: root_url, description: "#{Rails.env} server"}]
+      [{url: root_url, description: "API Server"}]
     end
 
     def root_url
-      url_options = Rails.application.routes.default_url_options
-      "#{url_options[:protocol]}://#{url_options[:host]}"
+      ApplicationResource.base_url
     end
 
     def tags

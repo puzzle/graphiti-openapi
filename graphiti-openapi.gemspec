@@ -25,24 +25,15 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # spec.add_runtime_dependency "railties", ">= 5"
-  # spec.add_runtime_dependency "activemodel"
-  # spec.add_runtime_dependency "responders"
-  # spec.add_runtime_dependency "kaminari"
+  spec.add_runtime_dependency "activemodel", "~> 6.0"
   spec.add_runtime_dependency "graphiti", "~> 1.3.9"
   spec.add_runtime_dependency "dry-struct", "~> 1.0"
   spec.add_runtime_dependency "transproc"
-  # spec.add_runtime_dependency "webpacker"
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "rspec-rails", "~> 3.8"
   spec.add_development_dependency "rspec-its"
   spec.add_development_dependency "rufo"
   spec.add_development_dependency "pry"
-  spec.add_development_dependency "activerecord"
-  spec.add_development_dependency "pg"
-  spec.add_development_dependency "graphiti_spec_helpers"
-  spec.add_development_dependency "factory_bot_rails"
 end
