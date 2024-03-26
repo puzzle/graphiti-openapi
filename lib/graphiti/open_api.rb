@@ -6,3 +6,5 @@ module Graphiti
     end
   end
 end
+
+require "graphiti/open_api/engine"
