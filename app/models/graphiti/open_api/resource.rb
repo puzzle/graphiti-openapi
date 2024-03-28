@@ -94,6 +94,8 @@ module Graphiti::OpenApi
     end
 
     def query_extra_fields_parameter
+      return unless extra_attributes.any?
+
       schema = {
         description: "#{human} extra attributes list",
         type: :array,
@@ -297,11 +299,6 @@ module Graphiti::OpenApi
           },
           uniqueItems: true,
         },
-        "#{type}_extra_attribute" => {
-          description: "#{human} extra attributes",
-          type: :string,
-          enum: extra_attributes.keys,
-        },
         "#{type}_related" => {
           description: "#{human} relationships available for inclusion",
           type: :array,
@@ -310,6 +307,15 @@ module Graphiti::OpenApi
         },
 
       }
+
+      if extra_attributes.any?
+        types["#{type}_extra_attribute"] = {
+          description: "#{human} extra attributes",
+          type: :string,
+          enum: extra_attributes.keys
+        }
+      end
+
       if relationship_names.any?
         types["#{type}_related"][:items][:enum] = relationship_names
       else
