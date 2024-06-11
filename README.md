@@ -22,13 +22,16 @@ Set up environment running
 bin/rails graphiti:openapi:install
 ```
 
-Configure OpenAPI template in `config/openapi.yml` and Graphiti::OpenAPI will pick your resources schema and
-translate it to OpenAPI 3.0 JSON and YAML files, providing Swagger UI with live API documentation.
-
 ## Usage
 
 Edit template in `config/openapi.yml` to customize your OpenAPI output. This file will be used as base for resulting
-document.
+document. Generate it by executing
+
+```bash
+bin/rails graphiti:openapi:generate
+```
+
+Results will be saved in `public/api/v1/openapi.json` and `public/api/v1/openapi.yaml`
 
 ## Development
 
