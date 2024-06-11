@@ -1,7 +1,6 @@
 require "rails"
 require "responders"
 require "graphiti"
-require "webpacker"
 
 module Graphiti
   module OpenApi
