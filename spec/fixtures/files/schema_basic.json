@@ -67,6 +67,65 @@
           "count"
         ]
       }
+    },
+    {
+      "name": "CreateOnlyResource",
+      "type": "create_only_entities",
+      "graphql_entrypoint": "create_only_entities",
+      "description": "Resource supporting only the create action.",
+      "attributes": {
+        "id": {
+          "type": "integer_id",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "label": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        }
+      },
+      "extra_attributes": {},
+      "sorts": {
+        "id": {},
+        "label": {}
+      },
+      "filters": {
+        "id": {
+          "type": "integer_id",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "operators": [
+            "eq",
+            "not_eq",
+            "eql",
+            "not_eql",
+            "prefix",
+            "not_prefix",
+            "suffix",
+            "not_suffix",
+            "match",
+            "not_match"
+          ]
+        }
+      },
+      "relationships": {},
+      "stats": {
+        "total": [
+          "count"
+        ]
+      }
     }
   ],
   "endpoints": {
@@ -77,6 +136,13 @@
         },
         "show": {
           "resource": "EntityResource"
+        }
+      }
+    },
+    "/api/v1/create_only_entities": {
+      "actions": {
+        "create": {
+          "resource": "CreateOnlyResource"
         }
       }
     }
