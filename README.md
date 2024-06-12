@@ -31,7 +31,7 @@ document. Generate it by executing
 bin/rails graphiti:openapi:generate
 ```
 
-Results will be saved in `public/api/v1/openapi.json` and `public/api/v1/openapi.yaml`
+Results will be saved in `public/#{ApplicationResource.endpoint_namespace}/openapi.json` and `.../openapi.yaml`
 
 ## Development
 
