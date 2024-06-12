@@ -25,7 +25,7 @@ module Graphiti::OpenApi
       {
         path => {
           parameters: parameters,
-        }.merge(collection_actions.map(&:operation).inject(&:merge)),
+        }.merge(collection_actions.map(&:operation).inject({}, &:merge)),
         resource_path => {
           parameters: [{'$ref': "#/components/parameters/#{resource.type}_id"}] + parameters,
         }.merge(resource_actions.map(&:operation).inject({}, &:merge)),
