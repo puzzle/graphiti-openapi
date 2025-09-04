@@ -54,7 +54,7 @@ module Graphiti::OpenApi
       template = template_source.data
       data = {
         openapi: "3.0.1",
-        # servers: servers,
+        servers: servers,
         tags: tags,
         paths: paths,
         components: {
@@ -84,7 +84,9 @@ module Graphiti::OpenApi
     end
 
     def root_url
-      ApplicationResource.base_url
+      hostname = ENV['RAILS_HOST_NAME'].presence || 'localhost:3000'
+      protocol = %w(true yes 1).include?(ENV['RAILS_HOST_SSL']) ? 'https' : 'http'
+      "#{protocol}://#{hostname}"
     end
 
     def tags
