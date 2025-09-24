@@ -25,34 +25,41 @@ module Graphiti::OpenApi
 
     def paths
       {
-        parameterize(path) => {
-          parameters: parameters,
-        }.merge(collection_actions.map(&:operation).inject(&:merge)),
-        parameterize(resource_path) => ({
-          parameters: [{'$ref': "#/components/parameters/#{resource.type}_id"}] + parameters,
-        }.merge(resource_actions.map(&:operation).inject(&:merge)) if resource_actions.any?),
+        parameterize(path) => collection_actions.map do |action|
+          action.operation.tap do |operation|
+            operation[action.method] = operation[action.method].merge({
+              parameters: parameters(action),
+            })
+          end
+        end.inject(&:merge).merge(parameters: path_parameters),
+        parameterize(resource_path) => (resource_actions.map do |action|
+          action.operation.tap do |operation|
+            operation[action.method] = operation[action.method].merge({
+              parameters: parameters(action),
+            })
+          end
+        end.inject(&:merge).merge(parameters: path_parameters) if resource_actions.any?),
       }.compact
     end
 
-    def parameters
+    def parameters(action)
       [].tap do |parameters|
-        path_parameters.each do |parameter|
-          parameters << parameter
-        end
-        parameters << {'$ref': "#/components/parameters/#{type}_include"} if resource.relationships?
-        parameters << {'$ref': "#/components/parameters/#{type}_sort"}
-        parameters << {'$ref': "#/components/parameters/#{type}_fields"}
-        parameters << {'$ref': "#/components/parameters/#{type}_extra_fields"} if resource.extra_attributes.any?
+        parameters << {'$ref': "#/components/parameters/#{resource.type}_id"} if action.resource?
+        parameters << {'$ref': "#/components/parameters/#{type}_include"} if resource.relationships? && action.read?
+        parameters << {'$ref': "#/components/parameters/#{type}_sort"} if action.read?
+        parameters << {'$ref': "#/components/parameters/#{type}_fields"} if action.read?
+        parameters << {'$ref': "#/components/parameters/#{type}_extra_fields"} if resource.extra_attributes.any? && action.read?
         resource.query_filter_parameters.each do |parameter|
+          next if action.resource? && parameter[:name].start_with?("filter[id]")
           filter_name = "#{type}_#{parameter[:name]}".gsub('[', "_").gsub(']', "")
           parameters << {'$ref': "#/components/parameters/#{filter_name}"}
-        end
+        end if action.read?
 
         resource.relationships.values.map do |relationship|
           relationship.resources.each do |resource|
             parameters << {'$ref': "#/components/parameters/#{resource.type}_fields"}
           end
-        end
+        end if action.read?
       end.uniq
     end
 
