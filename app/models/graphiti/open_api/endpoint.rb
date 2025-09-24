@@ -26,10 +26,10 @@ module Graphiti::OpenApi
         path => {
           parameters: parameters,
         }.merge(collection_actions.map(&:operation).inject(&:merge)),
-        resource_path => {
+        resource_path => ({
           parameters: [{'$ref': "#/components/parameters/#{resource.type}_id"}] + parameters,
-        }.merge(resource_actions.map(&:operation).inject(&:merge)),
-      }
+        }.merge(resource_actions.map(&:operation).inject(&:merge)) if resource_actions.any?),
+      }.compact
     end
 
     def parameters
@@ -52,7 +52,7 @@ module Graphiti::OpenApi
     end
 
     def resource
-      resource_actions.first.resource
+      actions.first.resource
     end
 
     def_instance_delegators :resource, :type
