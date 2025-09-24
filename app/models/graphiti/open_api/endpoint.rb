@@ -14,6 +14,8 @@ module Graphiti::OpenApi
   end
 
   class Endpoint < EndpointData
+    PATH_PARAM_REGEXP = %r{/([^/]+)/1/}
+
     attribute :schema, Types::Any
     attribute :path, Types::Coercible::String
 
@@ -23,10 +25,10 @@ module Graphiti::OpenApi
 
     def paths
       {
-        path => {
+        parameterize(path) => {
           parameters: parameters,
         }.merge(collection_actions.map(&:operation).inject(&:merge)),
-        resource_path => ({
+        parameterize(resource_path) => ({
           parameters: [{'$ref': "#/components/parameters/#{resource.type}_id"}] + parameters,
         }.merge(resource_actions.map(&:operation).inject(&:merge)) if resource_actions.any?),
       }.compact
@@ -34,6 +36,9 @@ module Graphiti::OpenApi
 
     def parameters
       [].tap do |parameters|
+        path_parameters.each do |parameter|
+          parameters << parameter
+        end
         parameters << {'$ref': "#/components/parameters/#{type}_include"} if resource.relationships?
         parameters << {'$ref': "#/components/parameters/#{type}_sort"}
         parameters << {'$ref': "#/components/parameters/#{type}_fields"}
@@ -63,6 +68,19 @@ module Graphiti::OpenApi
 
     def collection_actions
       actions.select(&:collection?)
+    end
+
+    def path_parameters
+      match = path.match(PATH_PARAM_REGEXP)
+      return [] unless match
+      match.captures.map do |param_type|
+        singular_type = param_type.singularize
+        resource.path_parameter(:"#{singular_type.underscore}_id", schema: {type: :string}, description: "ID of the #{singular_type.humanize}")
+      end
+    end
+
+    def parameterize(path)
+      path.gsub(PATH_PARAM_REGEXP) { "/#{$1}/{#{$1.singularize.underscore}_id}/" }
     end
 
     memoize :resource_path, :paths, :parameters, :resource, :resource_actions, :collection_actions
