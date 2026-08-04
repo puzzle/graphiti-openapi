@@ -24,8 +24,10 @@ module Graphiti::OpenApi
 
       definition = type.to_schema
       definition[:description] = description if description
-      definition[:readOnly] = readable unless writable
-      definition[:writeOnly] = writable unless readable
+      # Graphiti reports "guarded" instead of true for conditionally readable/writable
+      # attributes, while OpenAPI only allows booleans here.
+      definition[:readOnly] = true unless writable
+      definition[:writeOnly] = true unless readable
       {name => definition}
     end
   end
